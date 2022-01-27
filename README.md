@@ -4,7 +4,7 @@ Convert DICOM images with dcm extension to jpg images and extracting images attr
 
 Converting and extracting 2D and 3D DICOM images.
 
-DICOM images copies to "DCM_imgs" directory, output jpg images extract to "JPG_imgs" directory.
+DICOM images copies to "DCM_imgs_2D/3D" directory, output jpg images extract to "JPG_imgs_2D/3D" directory.
 
 Attributes saved in "Images2D_information.csv" or "Images3D_information.csv" files.
 
