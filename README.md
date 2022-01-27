@@ -9,4 +9,4 @@ DICOM images copies to "DCM_imgs" directory, output jpg images extract to "JPG_i
 Attributes saved in "Images2D_information.csv" or "Images3D_information.csv" files.
 
 File "dicom_image_description_all.csv" contains all standard DICOM attributes.
-It need for attributes extraction/
+It need for attributes extraction.
