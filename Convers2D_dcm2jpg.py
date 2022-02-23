@@ -65,10 +65,10 @@ def convert2D_dcm2jpg(dcm_folder_path="DCM_imgs_2D", jpg_folder_path="JPG_imgs_2
                     if ds.data_element(field) is None:
                         params.loc[lp, field] = None
                     else:
-                        x = str(ds.data_element(field)).replace("'", "")
-                        y = x.find(":")
-                        x = x[y+2:]
-                        params.loc[lp, field] = x
+                        s1 = str(ds.data_element(field)).replace("'", "")
+                        s2 = s1.find(":")
+                        s1 = s1[s2+2:]
+                        params.loc[lp, field] = s1
                 except:
                     params.loc[lp, field] = None
         # print(f"{ds.filename} converted to jpg file")
