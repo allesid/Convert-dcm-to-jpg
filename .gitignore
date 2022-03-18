@@ -127,6 +127,8 @@ dmypy.json
 # images
 *.dcm
 *.jpg
-.gitignore
+*.png
+*.nii.gz
 # Pyre type checker
 .pyre/
+.gitignore

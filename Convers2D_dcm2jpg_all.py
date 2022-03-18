@@ -52,9 +52,10 @@ def convert2D_dcm2jpg(dcm_folder_path="DCM_imgs_2D", jpg_folder_path="JPG_imgs_2
 
     if os.path.exists(annotation_file):
         annots = pd.read_csv(annotation_file)
+        annot = True
     else:
         print(f"File {annotation_file} is absent.")
-        annots = None
+        annot = False
 
     if os.path.exists(dicom_image_description_file):
         params = pd.read_csv(dicom_image_description_file)
@@ -98,7 +99,7 @@ def convert2D_dcm2jpg(dcm_folder_path="DCM_imgs_2D", jpg_folder_path="JPG_imgs_2
                 except:
                     params.loc[lp, field] = None
 
-            if annots and params.loc[lp, "SOPInstanceUID"] in list(annots["instanceUID"]):
+            if annot and (params.loc[lp, "SOPInstanceUID"] in list(annots["instanceUID"])):
                 sopii = params.loc[lp, "SOPInstanceUID"]
                 print('sopii=', sopii, ' type sopii=', type(sopii))
                 ann = annots[annots["instanceUID"]
@@ -160,7 +161,7 @@ def take_dcm_files(dcm_folder_path, jpg_folder_path, annots_fn, conv_fun=convert
                 dcm_fpath = os.path.join(dcm_folder_path, entry.name)
                 jpg_fpath = os.path.join(jpg_folder_path, entry.name)
                 os.makedirs(jpg_fpath, exist_ok=True)
-                take_dcm_files(dcm_fpath, jpg_fpath, conv_fun)
+                take_dcm_files(dcm_fpath, jpg_fpath, annots_fn, conv_fun)
             elif not entry.name.startswith('.') and entry.is_file():
                 if entry.name.endswith('.dcm'):
                     conv_fun(dcm_folder_path, jpg_folder_path, annots_fn)
