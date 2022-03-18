@@ -48,6 +48,8 @@ def convert3D_dcm2jpg(dcm_folder_path="DCM_imgs_3D", jpg_folder_path="JPG_imgs_3
 
     # Conversion
     for n, image in enumerate(images_path):
+        if not image.endswith(".dcm"):
+            continue
         ds = dicom.dcmread(os.path.join(dcm_folder_path, image))
         # specific_tags = list(params.columns)[:10], force=True
         # print(ds.filename)
