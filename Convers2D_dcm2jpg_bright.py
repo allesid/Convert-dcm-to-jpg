@@ -3,13 +3,15 @@
 import pydicom as dicom
 import os
 import cv2
+import numpy as np
 import pandas as pd
 import sys
 from tqdm import tqdm
 
 
+
 def convert2D_dcm2jpg(dcm_folder_path="DCM_imgs_2D", jpg_folder_path="JPG_imgs_2D",
- img_info_fn="Images2D_information.csv"):
+ img_info_fn="Images2D_information.csv", brightp=1):
 
     """
     Read images in 2D .dcm format and convert them into .jpg images.
@@ -50,7 +52,6 @@ def convert2D_dcm2jpg(dcm_folder_path="DCM_imgs_2D", jpg_folder_path="JPG_imgs_2
     for n, image in tqdm(enumerate(images_path)):
         if image.endswith(".dcm"):
             ds = dicom.dcmread(os.path.join(dcm_folder_path, image))
-            # print(type(ds))
             # print(ds.top())
             # print(ds.values())
             img = ds.pixel_array
@@ -60,6 +61,7 @@ def convert2D_dcm2jpg(dcm_folder_path="DCM_imgs_2D", jpg_folder_path="JPG_imgs_2
                 # print('img=\n', img)
                 print('img.max=', img.max(), 'img.min=',
                       img.min(), 'img[0,0]=', img[0, 0])
+            img = np.where(img > (img.max()//brightp), img.max()//brightp, img)
             img = (img - img.min()) / (img.max() - img.min()) * 255
             if len(img.shape) != 2:
                 print(
@@ -95,8 +97,11 @@ if __name__ == '__main__':
                         help='Specify the folder path for .jpg 2D images. Default: "JPG_imgs_2D".')
     parser.add_argument('-i', '--info', default="Images2D_information.csv",
                         help='Specify name for image information file. Default: "Images2D_information.csv"')
+    parser.add_argument('-b', '--bright', default=1,
+                        help='Specify below part of pixels values. Values range >=1 . Default: 1')
     args = parser.parse_args()
     dcm_folder_path = args.dcmpath
     jpg_folder_path = args.jpgpath
     img_info_fn = args.info
-    convert2D_dcm2jpg(dcm_folder_path, jpg_folder_path, img_info_fn)
+    brightp = int(args.bright)
+    convert2D_dcm2jpg(dcm_folder_path, jpg_folder_path, img_info_fn, brightp)
